@@ -1,0 +1,90 @@
+<html>
+<head>
+  <style>
+  
+    #canvas{
+      width:  100%;
+      height: 100%;
+    }
+    
+  </style>
+  
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+ 
+  <script src="//js.leapmotion.com/0.2.0/leap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+  <script>
+
+    $(document).ready(function()
+    {
+      // Get the canvas DOM element 
+        var canvas = document.getElementById('canvas');
+
+        // Making sure we have the proper aspect ratio for our canvas
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        // Create the context we will use for drawing
+        var c =  canvas.getContext('2d');
+
+        // Save the canvas width and canvas height
+        // as easily accesible variables
+        var width = canvas.width;
+        var height = canvas.height;
+
+        var controller = new Leap.Controller();
+       
+        controller.on( 'frame' , function(frame){
+
+          // Clears the canvas so frames don't build on each other.
+          c.clearRect(0, 0, width, height);
+
+          // Gets the number of fingers in each frame
+          var numberOfFingers = frame.fingers.length;
+          //var numberOfHands = frame.hands.length;
+
+          // Defines the font shape and size
+          c.font = "20px Arial";
+          // Tells Canvas how to align text
+          c.textAlign = 'center';
+          c.textBaseline = 'middle';
+
+          // Tells Canvas to draw the The number of fingers,
+          // at the center of the canvas
+          //c.fillText( numberOfFingers , width/2 , height/4 );
+          //c.fillText( numberOfHands , width/2 , 3*height/4);
+          //c.fillText(frame.fingers.tool, width/2, 2*height/3);
+          
+
+          var fings = frame.fingers;
+
+          for (var i = 0; i < numberOfFingers; i++)
+          {
+              // c.fillText(fings[i].toString(), width/2, i*height/(numberOfFingers + 1));
+              c.fillText(fings[i].tipVelocity, width/2, i*height/(numberOfFingers + 1) + 20)
+          };
+
+          // frame.fingers.each(function(index)
+          // {
+
+          //   c.fillText($(this).toString(), width/2, index*height/3);
+
+
+          // });
+
+          
+        
+       
+        });
+       
+      controller.connect();
+    });
+    
+  </script>
+    
+</body>
+</html>
